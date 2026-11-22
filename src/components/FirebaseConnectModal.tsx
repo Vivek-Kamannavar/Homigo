@@ -240,3 +240,4 @@ export const FirebaseConnectModal: React.FC<FirebaseConnectModalProps> = ({ isOp
     </div>
   );
 };
+

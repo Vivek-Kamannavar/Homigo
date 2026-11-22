@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Cpu, ArrowRight, Activity, Award, Flame } from 'lucide-react';
+import { ShieldCheck, Cpu, ArrowRight, Activity, Award, Flame, Database } from 'lucide-react';
 import { isFirebaseConfigured, FIREBASE_PROJECT_ID } from '../lib/firebase';
 import { FirebaseConnectModal } from './FirebaseConnectModal';
 
 interface NavbarProps {
   onOpenSimulator: () => void;
   onOpenContractModal: () => void;
+  onScrollToDatabase?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractModal, onScrollToDatabase }) => {
   const [isFirebaseModalOpen, setIsFirebaseModalOpen] = useState(false);
   const isConnected = isFirebaseConfigured();
 
@@ -46,6 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
             <button
               onClick={() => setIsFirebaseModalOpen(true)}
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 text-xs font-mono transition-all group"
+              title="Click to view Firebase DB settings"
             >
               <Flame className={`w-3.5 h-3.5 ${isConnected ? 'text-amber-400 fill-amber-400' : 'text-amber-400'}`} />
               <span className="text-slate-300">DB: <strong className="text-amber-400 font-semibold">{FIREBASE_PROJECT_ID}</strong></span>
@@ -66,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+          <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-300">
             <a href="#four-pillars" className="hover:text-emerald-400 transition-colors">
               The 4 Shifts
             </a>
@@ -82,6 +84,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
             </a>
             <a href="#services" className="hover:text-emerald-400 transition-colors">
               Services
+            </a>
+            <a 
+              href="#database-viewer" 
+              onClick={(e) => {
+                if (onScrollToDatabase) {
+                  e.preventDefault();
+                  onScrollToDatabase();
+                }
+              }}
+              className="hover:text-amber-400 transition-colors flex items-center gap-1 text-slate-200"
+            >
+              <Database className="w-3.5 h-3.5 text-amber-400" />
+              <span>Database Records</span>
             </a>
           </nav>
 

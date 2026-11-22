@@ -6,6 +6,7 @@ import { LiveAgentSimulator } from './components/LiveAgentSimulator';
 import { HitlDecisionStation } from './components/HitlDecisionStation';
 import { EconomicsComparison } from './components/EconomicsComparison';
 import { ServiceCatalog } from './components/ServiceCatalog';
+import { DatabaseViewer } from './components/DatabaseViewer';
 import { CustomerStories } from './components/CustomerStories';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
@@ -25,6 +26,11 @@ export const App: React.FC = () => {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToDatabase = () => {
+    const el = document.getElementById('database-viewer');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleOpenContractModal = (serviceName?: string) => {
     if (serviceName) setSelectedServiceForModal(serviceName);
     setIsContractModalOpen(true);
@@ -36,6 +42,7 @@ export const App: React.FC = () => {
       <Navbar
         onOpenSimulator={scrollToSimulator}
         onOpenContractModal={() => handleOpenContractModal()}
+        onScrollToDatabase={scrollToDatabase}
       />
 
       {/* Hero Section */}
@@ -67,6 +74,11 @@ export const App: React.FC = () => {
           onSelectService={(serviceName) => handleOpenContractModal(serviceName)}
         />
 
+        {/* Live Firebase Cloud Firestore Database Explorer */}
+        <DatabaseViewer
+          onOpenContractModal={() => handleOpenContractModal()}
+        />
+
         {/* Real Customer Case Studies */}
         <CustomerStories />
 
@@ -89,4 +101,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-
