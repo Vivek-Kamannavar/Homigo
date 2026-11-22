@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WORKFLOW_CASES } from '../data/mockData';
 import { WorkflowCase, AgentStep } from '../types';
-import { logAgentExecution, recordHitlDecision, SUPABASE_PROJECT_ID, isSupabaseConfigured } from '../lib/supabase';
+import { logAgentExecutionToFirestore, recordHitlDecisionToFirestore, FIREBASE_PROJECT_ID, isFirebaseConfigured } from '../lib/firebase';
 import {
   Cpu,
   FileSpreadsheet,
@@ -20,7 +20,8 @@ import {
   ChevronDown,
   Terminal,
   Activity,
-  Award
+  Award,
+  Flame
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -142,10 +143,10 @@ export const LiveAgentSimulator: React.FC<LiveAgentSimulatorProps> = ({ onTrigge
     setHitlApproved(true);
     setIsExecuting(true);
     addLog(`CPA SIGN-OFF: Partner Sarah Jenkins (CPA Lic #094821) certified ${optionId === 'opt-a' ? 'Option A (Section 179 Full Expensing)' : 'Option B'}.`);
-    addLog(`[Supabase] Logging certified checkpoint to hitl_checkpoints table...`);
+    addLog(`[Firestore] Syncing certified judgment to Firebase 'hitl_checkpoints' collection...`);
     
-    // Asynchronously log to Supabase
-    recordHitlDecision({
+    // Asynchronously log to Cloud Firestore
+    recordHitlDecisionToFirestore({
       question: currentCase.hitlCheckpoint.question,
       statutory_ref: currentCase.hitlCheckpoint.sectionRef,
       decision_elected: optionId,

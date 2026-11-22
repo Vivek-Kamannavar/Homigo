@@ -53,20 +53,21 @@ npm run preview
 
 ---
 
-## 🗄 Database Layer: Supabase Integration
-Connected to Supabase Project: **`bzdbzazwwybdbtvgdcgg`**  
-Project URL: `https://bzdbzazwwybdbtvgdcgg.supabase.co`
+## 🗄 Database Layer: Firebase Cloud Firestore
+Connected to Firebase Project: **`saas-f91ec`**  
+Console URL: [https://console.firebase.google.com/project/saas-f91ec/overview](https://console.firebase.google.com/project/saas-f91ec/overview)  
+Firestore Database: [https://console.firebase.google.com/project/saas-f91ec/firestore](https://console.firebase.google.com/project/saas-f91ec/firestore)
 
-### Database Tables:
-1. **`service_contracts`:** Records incoming service fulfillment contracts, company name, scope, raw attachments, and completion SLA.
+### Firestore Collections:
+1. **`service_contracts`:** Records incoming service fulfillment contracts, company name, scope, raw attachments, assigned CPA reviewer, and completion SLA.
 2. **`agent_execution_logs`:** Telemetry event log for every autonomous agent execution step, token count, latency, and statutory findings.
 3. **`hitl_checkpoints`:** Audit trail for Human-in-the-Loop CPA partner reviews, selected options, statutory citations, and certified timestamps.
 
 ### Database Setup:
-1. Copy the SQL migration script from `supabase/schema.sql`.
-2. Open your Supabase project's SQL Editor: [https://supabase.com/dashboard/project/bzdbzazwwybdbtvgdcgg/sql/new](https://supabase.com/dashboard/project/bzdbzazwwybdbtvgdcgg/sql/new).
-3. Paste and run the script to create tables and Row Level Security (RLS) policies.
-4. Add your anon public key in `.env` as `VITE_SUPABASE_ANON_KEY` or through the in-app Database Settings modal in the top navigation bar.
+1. Open your Firebase project: [https://console.firebase.google.com/project/saas-f91ec/firestore](https://console.firebase.google.com/project/saas-f91ec/firestore).
+2. Create your Cloud Firestore database (in test mode or production mode).
+3. Find your **Web API Key** from Project Settings: [https://console.firebase.google.com/project/saas-f91ec/settings/general](https://console.firebase.google.com/project/saas-f91ec/settings/general).
+4. Add your API key into `.env` as `VITE_FIREBASE_API_KEY` or paste it in the in-app Database Settings panel in the navigation bar.
 
 ---
 

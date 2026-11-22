@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Cpu, ArrowRight, Activity, Award, Database } from 'lucide-react';
-import { isSupabaseConfigured, SUPABASE_PROJECT_ID } from '../lib/supabase';
-import { SupabaseConnectModal } from './SupabaseConnectModal';
+import { ShieldCheck, Cpu, ArrowRight, Activity, Award, Flame } from 'lucide-react';
+import { isFirebaseConfigured, FIREBASE_PROJECT_ID } from '../lib/firebase';
+import { FirebaseConnectModal } from './FirebaseConnectModal';
 
 interface NavbarProps {
   onOpenSimulator: () => void;
@@ -9,8 +9,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractModal }) => {
-  const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
-  const isConnected = isSupabaseConfigured();
+  const [isFirebaseModalOpen, setIsFirebaseModalOpen] = useState(false);
+  const isConnected = isFirebaseConfigured();
 
   return (
     <>
@@ -42,14 +42,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
 
           {/* Database & Swarm Status Pills */}
           <div className="hidden lg:flex items-center gap-2">
-            {/* Supabase status button */}
+            {/* Firebase Status Button */}
             <button
-              onClick={() => setIsSupabaseModalOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 text-xs font-mono transition-all group"
+              onClick={() => setIsFirebaseModalOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 text-xs font-mono transition-all group"
             >
-              <Database className={`w-3.5 h-3.5 ${isConnected ? 'text-emerald-400' : 'text-cyan-400'}`} />
-              <span className="text-slate-300">DB: <strong className="text-emerald-400 font-semibold">{SUPABASE_PROJECT_ID.slice(0, 8)}...</strong></span>
-              <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'}`} />
+              <Flame className={`w-3.5 h-3.5 ${isConnected ? 'text-amber-400 fill-amber-400' : 'text-amber-400'}`} />
+              <span className="text-slate-300">DB: <strong className="text-amber-400 font-semibold">{FIREBASE_PROJECT_ID}</strong></span>
+              <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
             </button>
 
             {/* Swarm Status */}
@@ -88,11 +88,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
           {/* CTA Buttons */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setIsSupabaseModalOpen(true)}
+              onClick={() => setIsFirebaseModalOpen(true)}
               className="inline-flex sm:hidden items-center p-2 rounded-lg text-slate-300 bg-slate-900 border border-slate-800"
-              title="Database Settings"
+              title="Firebase Settings"
             >
-              <Database className="w-4 h-4 text-emerald-400" />
+              <Flame className="w-4 h-4 text-amber-400 fill-amber-400" />
             </button>
             <button
               onClick={onOpenSimulator}
@@ -111,10 +111,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, onOpenContractM
         </div>
       </header>
 
-      {/* Supabase Connection Modal */}
-      <SupabaseConnectModal
-        isOpen={isSupabaseModalOpen}
-        onClose={() => setIsSupabaseModalOpen(false)}
+      {/* Firebase Configuration Modal */}
+      <FirebaseConnectModal
+        isOpen={isFirebaseModalOpen}
+        onClose={() => setIsFirebaseModalOpen(false)}
       />
     </>
   );
