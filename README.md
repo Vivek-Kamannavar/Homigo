@@ -53,6 +53,23 @@ npm run preview
 
 ---
 
+## 🗄 Database Layer: Supabase Integration
+Connected to Supabase Project: **`bzdbzazwwybdbtvgdcgg`**  
+Project URL: `https://bzdbzazwwybdbtvgdcgg.supabase.co`
+
+### Database Tables:
+1. **`service_contracts`:** Records incoming service fulfillment contracts, company name, scope, raw attachments, and completion SLA.
+2. **`agent_execution_logs`:** Telemetry event log for every autonomous agent execution step, token count, latency, and statutory findings.
+3. **`hitl_checkpoints`:** Audit trail for Human-in-the-Loop CPA partner reviews, selected options, statutory citations, and certified timestamps.
+
+### Database Setup:
+1. Copy the SQL migration script from `supabase/schema.sql`.
+2. Open your Supabase project's SQL Editor: [https://supabase.com/dashboard/project/bzdbzazwwybdbtvgdcgg/sql/new](https://supabase.com/dashboard/project/bzdbzazwwybdbtvgdcgg/sql/new).
+3. Paste and run the script to create tables and Row Level Security (RLS) policies.
+4. Add your anon public key in `.env` as `VITE_SUPABASE_ANON_KEY` or through the in-app Database Settings modal in the top navigation bar.
+
+---
+
 ## 🛠 Tech Stack
 - **Framework:** React 18 + TypeScript + Vite
 - **Styling:** Tailwind CSS + Custom Neon Glow Design System
@@ -63,3 +80,4 @@ npm run preview
 
 ## 📜 License & Compliance
 Delaware Fiduciary License #AEGIS-FID-2024. IRS Modernized e-File (MeF) Authorized Provider.
+

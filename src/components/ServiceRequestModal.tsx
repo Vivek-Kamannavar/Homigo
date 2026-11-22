@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Upload, FileText, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
+import { X, Upload, FileText, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, AlertCircle, Database } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { persistServiceContract, isSupabaseConfigured, SUPABASE_PROJECT_ID } from '../lib/supabase';
 
 interface ServiceRequestModalProps {
   isOpen: boolean;
@@ -24,6 +25,8 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
   ]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [savedContractId, setSavedContractId] = useState<string>('');
+  const [isDbPersisted, setIsDbPersisted] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -37,19 +40,31 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
     setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      confetti({
-        particleCount: 70,
-        spread: 60,
-        origin: { y: 0.6 }
-      });
-    }, 1200);
+    // Persist to Supabase Database
+    const { data, error, isLocal } = await persistServiceContract({
+      entity_name: companyName,
+      service_scope: serviceType,
+      fiscal_period: taxYear,
+      raw_files: uploadedFiles,
+      status: 'pending',
+      cpa_reviewer: 'Sarah Jenkins, CPA (Partner)',
+      sla_minutes: 8
+    });
+
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    setSavedContractId(data?.id || `AEGIS-CTR-${Math.floor(100000 + Math.random() * 900000)}`);
+    setIsDbPersisted(!isLocal);
+
+    confetti({
+      particleCount: 75,
+      spread: 60,
+      origin: { y: 0.6 }
+    });
   };
 
   const handleGoToSimulator = () => {
@@ -76,7 +91,9 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
               <span className="px-2.5 py-0.5 text-xs font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30 rounded uppercase">
                 Service Contract Initiation
               </span>
-              <span className="text-xs text-slate-400 font-mono">Zero DIY Labor Required</span>
+              <span className="text-xs text-slate-400 font-mono">
+                DB: {SUPABASE_PROJECT_ID.slice(0, 10)}...
+              </span>
             </div>
 
             <h3 className="text-2xl font-extrabold text-white">
@@ -230,11 +247,18 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
               Your service contract for <strong className="text-white">{companyName}</strong> is now executing across 4 specialized AI agents. Supervising Partner Sarah Jenkins, CPA is staged at the HITL checkpoint.
             </p>
 
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-left text-xs font-mono mb-6 max-w-md mx-auto space-y-1 text-slate-400">
-              <div className="text-emerald-400 font-bold">✓ Contract ID: #AEGIS-CTR-98214</div>
+            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-left text-xs font-mono mb-6 max-w-md mx-auto space-y-2 text-slate-400">
+              <div className="flex items-center justify-between text-emerald-400 font-bold">
+                <span>✓ Contract ID: #{savedContractId}</span>
+                <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-300 flex items-center gap-1">
+                  <Database className="w-3 h-3 text-emerald-400" />
+                  <span>{isDbPersisted ? 'Supabase Synchronized' : 'Local Sandbox Mode'}</span>
+                </span>
+              </div>
               <div>• Status: Autonomous Multi-Agent Ingestion active</div>
-              <div>• SLA Target: Completed under 10 minutes</div>
-              <div>• CPA Partner: Sarah Jenkins (Delaware CPA #094821)</div>
+              <div>• Target SLA: Completed under 8 minutes</div>
+              <div>• CPA Reviewer: Sarah Jenkins, CPA (Partner)</div>
+              <div>• Supabase Target: {SUPABASE_PROJECT_ID}</div>
             </div>
 
             <div className="flex justify-center gap-3">
@@ -258,4 +282,3 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
     </div>
   );
 };
-

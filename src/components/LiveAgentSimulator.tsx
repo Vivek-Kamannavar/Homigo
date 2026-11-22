@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WORKFLOW_CASES } from '../data/mockData';
 import { WorkflowCase, AgentStep } from '../types';
+import { logAgentExecution, recordHitlDecision, SUPABASE_PROJECT_ID, isSupabaseConfigured } from '../lib/supabase';
 import {
   Cpu,
   FileSpreadsheet,
@@ -141,6 +142,19 @@ export const LiveAgentSimulator: React.FC<LiveAgentSimulatorProps> = ({ onTrigge
     setHitlApproved(true);
     setIsExecuting(true);
     addLog(`CPA SIGN-OFF: Partner Sarah Jenkins (CPA Lic #094821) certified ${optionId === 'opt-a' ? 'Option A (Section 179 Full Expensing)' : 'Option B'}.`);
+    addLog(`[Supabase] Logging certified checkpoint to hitl_checkpoints table...`);
+    
+    // Asynchronously log to Supabase
+    recordHitlDecision({
+      question: currentCase.hitlCheckpoint.question,
+      statutory_ref: currentCase.hitlCheckpoint.sectionRef,
+      decision_elected: optionId,
+      cpa_reviewer: currentCase.hitlCheckpoint.cpaReviewer.name,
+      cpa_license: currentCase.hitlCheckpoint.cpaReviewer.license,
+      risk_category: currentCase.hitlCheckpoint.riskCategory,
+      ai_confidence: currentCase.hitlCheckpoint.aiConfidence
+    }).catch(console.error);
+
     addLog(`START: Synthesis & Filing Agent (Aegis-Drafter) assembling IRS 1120-S package...`);
 
     setStepStatuses((prev) => ({
