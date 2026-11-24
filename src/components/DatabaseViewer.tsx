@@ -381,3 +381,4 @@ export const DatabaseViewer: React.FC<DatabaseViewerProps> = ({ onOpenContractMo
     </section>
   );
 };
+

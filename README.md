@@ -53,6 +53,23 @@ npm run preview
 
 ---
 
+---
+
+## 🌐 The 8 Dedicated Platform Webpages
+
+The application is architected into 8 distinct full-page experiences using `react-router-dom`:
+
+1. **`/` — Overview & Executive Platform Portal**: Complete paradigm breakdown, high-level architecture directory, and instant service contract launcher.
+2. **`/pillars` — The 4 Foundational Pillars**: In-depth analysis of Tool Provider vs Service Operator, Multi-Agent Swarms, High-Value HITL, and Market Disruption with comparative matrix.
+3. **`/simulator` — Live Multi-Agent Swarm Cockpit**: Real-time 4-agent execution telemetry (Nova-Ingest, Cortex-Math, Lex-Audit, Aegis-Drafter), token counters, and live statutory audit logs.
+4. **`/hitl` — Human-in-the-Loop Decision Station**: Dedicated partner review station for high-liability edge cases (IRC § 179 vs § 174, Wayfair multi-state nexus, M&A change of control).
+5. **`/economics` — 10x Disruption & ROI Calculator**: Interactive financial sliders (team size & transaction volume) comparing Traditional Big 4 vs DIY SaaS vs Aegis Operator.
+6. **`/services` — Regulated Service Catalog**: Contract specifications for Corporate Tax (1120-S), GAAP Monthly Audit, 1099 Safe Harbor, and R&D Credit Certification.
+7. **`/database` — Cloud Firestore Database Portal**: Live collection explorer for Firebase Project `saas-f91ec` with document viewer, test ping, and console links.
+8. **`/assurance` — Customer Stories, Fiduciary Assurance & FAQ**: Real startup case studies (YC W23, Logistics fleets), Circular 230 legal notices, and $5M E&O policy disclosures.
+
+---
+
 ## 🗄 Database Layer: Firebase Cloud Firestore
 Connected to Firebase Project: **`saas-f91ec`**  
 Console URL: [https://console.firebase.google.com/project/saas-f91ec/overview](https://console.firebase.google.com/project/saas-f91ec/overview)  
