@@ -65,26 +65,36 @@ The application is architected into 8 distinct full-page experiences using `reac
 4. **`/hitl` — Human-in-the-Loop Decision Station**: Dedicated partner review station for high-liability edge cases (IRC § 179 vs § 174, Wayfair multi-state nexus, M&A change of control).
 5. **`/economics` — 10x Disruption & ROI Calculator**: Interactive financial sliders (team size & transaction volume) comparing Traditional Big 4 vs DIY SaaS vs Aegis Operator.
 6. **`/services` — Regulated Service Catalog**: Contract specifications for Corporate Tax (1120-S), GAAP Monthly Audit, 1099 Safe Harbor, and R&D Credit Certification.
-7. **`/database` — Cloud Firestore Database Portal**: Live collection explorer for Firebase Project `saas-f91ec` with document viewer, test ping, and console links.
+7. **`/database` — Laptop MongoDB Database Portal**: Live collection explorer for your local MongoDB database (`mongodb://127.0.0.1:27017/homigo_aegis_db`) with document viewer, test ping, and MongoDB Compass guidance.
 8. **`/assurance` — Customer Stories, Fiduciary Assurance & FAQ**: Real startup case studies (YC W23, Logistics fleets), Circular 230 legal notices, and $5M E&O policy disclosures.
 
 ---
 
-## 🗄 Database Layer: Firebase Cloud Firestore
-Connected to Firebase Project: **`saas-f91ec`**  
-Console URL: [https://console.firebase.google.com/project/saas-f91ec/overview](https://console.firebase.google.com/project/saas-f91ec/overview)  
-Firestore Database: [https://console.firebase.google.com/project/saas-f91ec/firestore](https://console.firebase.google.com/project/saas-f91ec/firestore)
+## 🗄 Database Layer: Local MongoDB Database on Laptop
+Connected to your Laptop MongoDB Server: **`mongodb://127.0.0.1:27017`**  
+Database Name: **`homigo_aegis_db`**  
+Windows Service: **`MongoDB Server 8.3 (Status: RUNNING)`**
 
-### Firestore Collections:
+### MongoDB Collections:
 1. **`service_contracts`:** Records incoming service fulfillment contracts, company name, scope, raw attachments, assigned CPA reviewer, and completion SLA.
 2. **`agent_execution_logs`:** Telemetry event log for every autonomous agent execution step, token count, latency, and statutory findings.
 3. **`hitl_checkpoints`:** Audit trail for Human-in-the-Loop CPA partner reviews, selected options, statutory citations, and certified timestamps.
 
-### Database Setup:
-1. Open your Firebase project: [https://console.firebase.google.com/project/saas-f91ec/firestore](https://console.firebase.google.com/project/saas-f91ec/firestore).
-2. Create your Cloud Firestore database (in test mode or production mode).
-3. Find your **Web API Key** from Project Settings: [https://console.firebase.google.com/project/saas-f91ec/settings/general](https://console.firebase.google.com/project/saas-f91ec/settings/general).
-4. Add your API key into `.env` as `VITE_FIREBASE_API_KEY` or paste it in the in-app Database Settings panel in the navigation bar.
+### How to View with MongoDB Compass:
+1. Open **MongoDB Compass** on your laptop.
+2. Connect using the connection string:
+   ```
+   mongodb://127.0.0.1:27017/homigo_aegis_db
+   ```
+3. You will see the `homigo_aegis_db` database and can query documents directly!
+
+### Running Full-Stack Dev Server:
+```bash
+npm run dev
+```
+This concurrently starts:
+- The MongoDB Express API backend on `http://localhost:5000`
+- The Vite frontend on `http://localhost:5173` with automatic `/api` proxying to MongoDB!
 
 ---
 

@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { ShieldCheck, Cpu, ArrowRight, Activity, Award, Flame, Menu, X, Database, Scale, TrendingUp, Building2, Sparkles, Home } from 'lucide-react';
-import { isFirebaseConfigured, FIREBASE_PROJECT_ID } from '../lib/firebase';
-import { FirebaseConnectModal } from './FirebaseConnectModal';
+import { ShieldCheck, Cpu, ArrowRight, Database, Menu, X, Scale, TrendingUp, Building2, Sparkles, Home, Server } from 'lucide-react';
+import { MONGODB_LOCAL_URI, checkMongoHealth } from '../lib/mongodb';
+import { MongoConnectModal } from './MongoConnectModal';
 
 interface NavbarProps {
   onOpenContractModal: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenContractModal }) => {
-  const [isFirebaseModalOpen, setIsFirebaseModalOpen] = useState(false);
+  const [isMongoModalOpen, setIsMongoModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isConnected = isFirebaseConfigured();
+  const [isMongoOnline, setIsMongoOnline] = useState(true);
+
+  useEffect(() => {
+    checkMongoHealth().then((health) => {
+      setIsMongoOnline(health.status === 'connected');
+    });
+  }, []);
 
   const navLinks = [
     { label: 'Overview', path: '/', icon: <Home className="w-3.5 h-3.5" /> },
@@ -20,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContractModal }) => {
     { label: 'HITL Station', path: '/hitl', icon: <Scale className="w-3.5 h-3.5" /> },
     { label: '10x Economics', path: '/economics', icon: <TrendingUp className="w-3.5 h-3.5" /> },
     { label: 'Services', path: '/services', icon: <Building2 className="w-3.5 h-3.5" /> },
-    { label: 'Database', path: '/database', icon: <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> },
+    { label: 'MongoDB', path: '/database', icon: <Database className="w-3.5 h-3.5 text-emerald-400" /> },
     { label: 'Stories & FAQ', path: '/assurance', icon: <Sparkles className="w-3.5 h-3.5" /> },
   ];
 
@@ -75,15 +81,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContractModal }) => {
 
           {/* Right Action Icons & Status */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Firebase Database Status Button */}
+            {/* MongoDB Database Status Button */}
             <button
-              onClick={() => setIsFirebaseModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 text-xs font-mono transition-all group"
-              title="Click to view Firebase DB settings"
+              onClick={() => setIsMongoModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/50 text-xs font-mono transition-all group"
+              title="Click to view Local MongoDB settings"
             >
-              <Flame className={`w-3.5 h-3.5 ${isConnected ? 'text-amber-400 fill-amber-400' : 'text-amber-400'}`} />
-              <span className="hidden md:inline text-slate-300">DB: <strong className="text-amber-400 font-semibold">{FIREBASE_PROJECT_ID}</strong></span>
-              <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+              <Database className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden md:inline text-slate-300">DB: <strong className="text-emerald-400 font-semibold">MongoDB (27017)</strong></span>
+              <span className={`w-2 h-2 rounded-full ${isMongoOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
             </button>
 
             {/* CTA Contract Button */}
@@ -132,10 +138,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContractModal }) => {
         )}
       </header>
 
-      {/* Firebase Configuration Modal */}
-      <FirebaseConnectModal
-        isOpen={isFirebaseModalOpen}
-        onClose={() => setIsFirebaseModalOpen(false)}
+      {/* MongoDB Configuration Modal */}
+      <MongoConnectModal
+        isOpen={isMongoModalOpen}
+        onClose={() => setIsMongoModalOpen(false)}
       />
     </>
   );

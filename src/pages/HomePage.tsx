@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
-import { ArrowRight, ShieldCheck, Cpu, Scale, TrendingUp, Building2, Database, Award, CheckCircle2, Sparkles, Flame } from 'lucide-react';
-import { FIREBASE_PROJECT_ID } from '../lib/firebase';
+import { ArrowRight, ShieldCheck, Cpu, Scale, TrendingUp, Building2, Database, Award, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface HomePageProps {
   onOpenContractModal: () => void;
@@ -46,11 +45,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenContractModal }) => {
       badge: 'Fiduciary Contracts'
     },
     {
-      title: '06. Cloud Firestore Explorer',
+      title: '06. Laptop MongoDB Explorer',
       path: '/database',
-      icon: <Flame className="w-6 h-6 text-amber-400 fill-amber-400" />,
-      desc: `Live database inspection for Firebase Project ${FIREBASE_PROJECT_ID} with collections for contracts, HITL, and logs.`,
-      badge: 'Firebase Live'
+      icon: <Database className="w-6 h-6 text-emerald-400" />,
+      desc: 'Live BSON database explorer on your laptop at 127.0.0.1:27017 for service contracts, HITL, and logs.',
+      badge: 'Local MongoDB'
     },
     {
       title: '07. Customer Stories & Impact',
@@ -163,3 +162,4 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenContractModal }) => {
     </div>
   );
 };
+

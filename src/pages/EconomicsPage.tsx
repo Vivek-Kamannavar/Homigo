@@ -64,3 +64,4 @@ export const EconomicsPage: React.FC = () => {
     </div>
   );
 };
+

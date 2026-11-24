@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, Upload, FileText, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, AlertCircle, Flame } from 'lucide-react';
+import { X, Upload, FileText, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, AlertCircle, Database } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { persistServiceContractToFirestore, isFirebaseConfigured, FIREBASE_PROJECT_ID } from '../lib/firebase';
+import { persistServiceContractToMongo, MONGODB_LOCAL_URI, MONGODB_DB_NAME } from '../lib/mongodb';
 
 interface ServiceRequestModalProps {
   isOpen: boolean;
@@ -44,8 +44,8 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Persist to Cloud Firestore
-    const { data, error, isLocal } = await persistServiceContractToFirestore({
+    // Persist to local MongoDB database
+    const { data, error, isMongo } = await persistServiceContractToMongo({
       entity_name: companyName,
       service_scope: serviceType,
       fiscal_period: taxYear,
@@ -57,8 +57,8 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
 
     setIsSubmitting(false);
     setIsSuccess(true);
-    setSavedContractId(data?.id || `AEGIS-CTR-${Math.floor(100000 + Math.random() * 900000)}`);
-    setIsDbPersisted(!isLocal);
+    setSavedContractId(data?.id || `mongo-doc-${Math.floor(100000 + Math.random() * 900000)}`);
+    setIsDbPersisted(isMongo);
 
     confetti({
       particleCount: 75,
@@ -91,9 +91,9 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
               <span className="px-2.5 py-0.5 text-xs font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30 rounded uppercase">
                 Service Contract Initiation
               </span>
-              <span className="text-xs text-amber-400 font-mono flex items-center gap-1">
-                <Flame className="w-3.5 h-3.5 fill-amber-400" />
-                <span>DB: {FIREBASE_PROJECT_ID}</span>
+              <span className="text-xs text-emerald-400 font-mono flex items-center gap-1">
+                <Database className="w-3.5 h-3.5" />
+                <span>DB: MongoDB (127.0.0.1:27017)</span>
               </span>
             </div>
 
@@ -250,16 +250,16 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({
 
             <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-left text-xs font-mono mb-6 max-w-md mx-auto space-y-2 text-slate-400">
               <div className="flex items-center justify-between text-emerald-400 font-bold">
-                <span>✓ Firestore Doc ID: {savedContractId}</span>
-                <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-amber-300 flex items-center gap-1">
-                  <Flame className="w-3 h-3 fill-amber-400 text-amber-400" />
-                  <span>{isDbPersisted ? 'Firestore Synchronized' : 'Local Sandbox Mode'}</span>
+                <span>✓ MongoDB ObjectId: {savedContractId}</span>
+                <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-emerald-300 flex items-center gap-1">
+                  <Database className="w-3 h-3 text-emerald-400" />
+                  <span>{isDbPersisted ? 'MongoDB Synchronized' : 'Local Sandbox Mode'}</span>
                 </span>
               </div>
               <div>• Status: Autonomous Multi-Agent Ingestion active</div>
               <div>• Target SLA: Completed under 8 minutes</div>
               <div>• CPA Reviewer: Sarah Jenkins, CPA (Partner)</div>
-              <div>• Cloud Firestore: {FIREBASE_PROJECT_ID}/service_contracts</div>
+              <div>• Database: {MONGODB_LOCAL_URI}/{MONGODB_DB_NAME}.service_contracts</div>
             </div>
 
             <div className="flex justify-center gap-3">

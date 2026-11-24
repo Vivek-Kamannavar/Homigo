@@ -65,3 +65,4 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenContractModal 
     </div>
   );
 };
+

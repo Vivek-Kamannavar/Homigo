@@ -83,3 +83,4 @@ export const PillarsPage: React.FC = () => {
     </div>
   );
 };
+

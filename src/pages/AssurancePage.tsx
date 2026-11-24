@@ -71,3 +71,4 @@ export const AssurancePage: React.FC<AssurancePageProps> = ({ onOpenContractModa
     </div>
   );
 };
+
